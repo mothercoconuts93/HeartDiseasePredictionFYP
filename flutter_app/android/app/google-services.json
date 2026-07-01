@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255048596022",
+    "project_id": "heartdiseasepredictionfyp",
+    "storage_bucket": "heartdiseasepredictionfyp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255048596022:android:32227002af53106fb43697",
+        "android_client_info": {
+          "package_name": "com.guled.cardioguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIVODCHwGh_btt3KlL8k107ll3QnpOP-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
