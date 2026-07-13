@@ -7,7 +7,6 @@ import '../../widgets/custom_textfield.dart';
 import '../../widgets/loading_indicator.dart';
 import '../../widgets/cardio_guard_logo.dart';
 import '../patient/patient_home_screen.dart';
-import '../practitioner/practitioner_home_screen.dart';
 import '../../themes/app_theme.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -23,7 +22,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  String selectedRole = 'Patient';
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
 
@@ -67,7 +65,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       fullName: name,
       email: email,
       password: password,
-      role: selectedRole,
     );
 
     if (!mounted) return;
@@ -75,11 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (success) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => selectedRole == 'Practitioner'
-              ? const PractitionerHomeScreen()
-              : const PatientHomeScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const PatientHomeScreen()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -120,36 +113,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 22),
 
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'I am a...',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppTheme.textSecondary,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SegmentedButton<String>(
-                      segments: const [
-                        ButtonSegment(
-                          value: 'Patient',
-                          label: Text('Patient'),
-                          icon: Icon(Icons.person_outline),
-                        ),
-                        ButtonSegment(
-                          value: 'Practitioner',
-                          label: Text('Practitioner'),
-                          icon: Icon(Icons.medical_services_outlined),
-                        ),
-                      ],
-                      selected: {selectedRole},
-                      showSelectedIcon: false,
-                      onSelectionChanged: (values) =>
-                          setState(() => selectedRole = values.first),
-                      style: const ButtonStyle(
-                        visualDensity: VisualDensity(vertical: 2),
+                    const Text(
+                      'Create a patient account to monitor your heart health.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppTheme.textSecondary,
                       ),
                     ),
 

@@ -19,7 +19,6 @@ class AuthService {
     required String fullName,
     required String email,
     required String password,
-    required String role,
   }) async {
     final UserCredential userCredential = await _auth
         .createUserWithEmailAndPassword(
@@ -33,7 +32,7 @@ class AuthService {
       uid: uid,
       fullName: fullName.trim(),
       email: email.trim(),
-      role: role,
+      role: 'Patient',
       createdAt: DateTime.now(),
     );
 

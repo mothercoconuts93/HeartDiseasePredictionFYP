@@ -23,7 +23,6 @@ class AuthProvider extends ChangeNotifier {
     required String fullName,
     required String email,
     required String password,
-    required String role,
   }) async {
     try {
       isLoading = true;
@@ -34,7 +33,6 @@ class AuthProvider extends ChangeNotifier {
         fullName: fullName,
         email: email,
         password: password,
-        role: role,
       );
 
       currentUserData = await _authService.getCurrentUserData();
