@@ -1,10 +1,22 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+import logging
+import os
+from pathlib import Path
+
 import joblib
 import pandas as pd
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+logger = logging.getLogger("cardioguard.api")
 
 # Load Trained Model
-model = joblib.load("machine_learning/heart_model.pkl")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+MODEL_PATH = Path(
+    os.getenv("CARDIOGUARD_MODEL_PATH", PROJECT_ROOT / "machine_learning" / "heart_model.pkl")
+)
+model = joblib.load(MODEL_PATH)
 
 # FastAPI Configuration
 app = FastAPI(
@@ -14,6 +26,23 @@ app = FastAPI(
     contact={
         "name": "Guled Ibrahim"
     }
+)
+
+allowed_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "CARDIOGUARD_CORS_ORIGINS",
+        "http://localhost,http://localhost:3000,http://localhost:5000",
+    ).split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 # Input Model
@@ -50,11 +79,45 @@ class PredictionResponse(BaseModel):
     model: str
     status: str
 
+
+def classify_risk(probability: float) -> tuple[str, str]:
+    if probability >= 75:
+        return (
+            "High Risk",
+            "Consult a cardiologist as soon as possible. "
+            "Further clinical evaluation is strongly recommended.",
+        )
+    if probability >= 50:
+        return (
+            "Moderate Risk",
+            "Schedule a medical check-up and improve lifestyle habits "
+            "such as diet and regular exercise.",
+        )
+    if probability >= 25:
+        return (
+            "Low Risk",
+            "Maintain a healthy lifestyle and continue regular health screening.",
+        )
+    return (
+        "Very Low Risk",
+        "Continue healthy habits and attend routine medical check-ups.",
+    )
+
 # Home Endpoint
 @app.get("/")
 def home():
     return {
         "message": "Heart Disease Prediction API Running Successfully"
+    }
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy",
+        "service": "cardioguard-prediction-api",
+        "version": app.version,
+        "model": "Random Forest",
     }
 
 # Prediction Endpoint
@@ -87,29 +150,7 @@ def predict(data: PatientData):
 
         probability = round(float(probability) * 100, 2)
 
-        # Risk Classification
-        if probability >= 75:
-            risk_level = "High Risk"
-            recommendation = (
-                "Consult a cardiologist as soon as possible. "
-                "Further clinical evaluation is strongly recommended."
-            )
-        elif probability >= 50:
-            risk_level = "Moderate Risk"
-            recommendation = (
-                "Schedule a medical check-up and improve lifestyle habits "
-                "such as diet and regular exercise."
-            )
-        elif probability >= 25:
-            risk_level = "Low Risk"
-            recommendation = (
-                "Maintain a healthy lifestyle and continue regular health screening."
-            )
-        else:
-            risk_level = "Very Low Risk"
-            recommendation = (
-                "Continue healthy habits and attend routine medical check-ups."
-            )
+        risk_level, recommendation = classify_risk(probability)
         return PredictionResponse(
             prediction=int(prediction),
             risk_level=risk_level,
@@ -119,8 +160,9 @@ def predict(data: PatientData):
             status="Prediction Completed Successfully"
 
         )
-    except Exception as e:
+    except Exception as error:
+        logger.exception("Prediction failed: %s", error)
         raise HTTPException(
             status_code=500,
-            detail=f"Prediction Error: {str(e)}"
-        )
+            detail="Prediction could not be completed.",
+        ) from error
