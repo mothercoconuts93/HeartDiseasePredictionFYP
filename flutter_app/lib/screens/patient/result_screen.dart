@@ -86,6 +86,7 @@ class ResultScreen extends StatelessWidget {
                     Text(
                       '${probability.toStringAsFixed(2)}%',
                       style: const TextStyle(
+                        fontFamily: 'monospace',
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
                       ),

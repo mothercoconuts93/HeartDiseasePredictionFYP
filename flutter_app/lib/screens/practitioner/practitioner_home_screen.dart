@@ -44,6 +44,7 @@ class PractitionerHomeScreen extends StatelessWidget {
                 Text(
                   value,
                   style: const TextStyle(
+                    fontFamily: 'monospace',
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),

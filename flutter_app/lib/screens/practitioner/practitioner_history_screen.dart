@@ -139,6 +139,7 @@ class PractitionerHistoryScreen extends StatelessWidget {
                                   trailing: Text(
                                     '${prediction.probability.toStringAsFixed(1)}%',
                                     style: TextStyle(
+                                      fontFamily: 'monospace',
                                       color: color,
                                       fontSize: 17,
                                       fontWeight: FontWeight.w800,

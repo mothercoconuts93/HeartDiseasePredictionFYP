@@ -168,6 +168,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   Text(
                                     '${item.probability.toStringAsFixed(2)}%',
                                     style: TextStyle(
+                                      fontFamily: 'monospace',
                                       color: color,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,

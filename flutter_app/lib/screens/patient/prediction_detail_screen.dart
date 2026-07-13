@@ -60,6 +60,7 @@ class PredictionDetailScreen extends StatelessWidget {
                       Text(
                         '${prediction.probability.toStringAsFixed(2)}%',
                         style: TextStyle(
+                          fontFamily: 'monospace',
                           color: _riskColor,
                           fontSize: 24,
                           fontWeight: FontWeight.w800,
@@ -114,7 +115,11 @@ class PredictionDetailScreen extends StatelessWidget {
           const SizedBox(height: 18),
           SelectableText(
             'Reference: ${prediction.predictionId}',
-            style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary),
+            style: const TextStyle(
+              fontFamily: 'monospace',
+              fontSize: 10,
+              color: AppTheme.textSecondary,
+            ),
           ),
         ],
       ),

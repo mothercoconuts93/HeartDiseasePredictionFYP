@@ -34,38 +34,29 @@ class AppTheme {
         error: danger,
       ),
       textTheme: base.textTheme
-          .apply(
-            fontFamily: 'monospace',
-            bodyColor: textPrimary,
-            displayColor: textPrimary,
-          )
+          .apply(bodyColor: textPrimary, displayColor: textPrimary)
           .copyWith(
             headlineSmall: const TextStyle(
-              fontFamily: 'monospace',
               fontSize: 23,
               fontWeight: FontWeight.w700,
               color: textPrimary,
             ),
             titleLarge: const TextStyle(
-              fontFamily: 'monospace',
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: textPrimary,
             ),
             titleMedium: const TextStyle(
-              fontFamily: 'monospace',
               fontSize: 15,
               fontWeight: FontWeight.w600,
               color: textPrimary,
             ),
             bodyMedium: const TextStyle(
-              fontFamily: 'monospace',
               fontSize: 13,
               color: textSecondary,
               height: 1.45,
             ),
             labelLarge: const TextStyle(
-              fontFamily: 'monospace',
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
@@ -79,7 +70,6 @@ class AppTheme {
         scrolledUnderElevation: 0,
         shape: Border(bottom: BorderSide(color: border)),
         titleTextStyle: TextStyle(
-          fontFamily: 'monospace',
           color: primary,
           fontSize: 17,
           fontWeight: FontWeight.w800,
@@ -93,11 +83,7 @@ class AppTheme {
           minimumSize: const Size(double.infinity, 54),
           elevation: 0,
           shape: const RoundedRectangleBorder(borderRadius: radius),
-          textStyle: const TextStyle(
-            fontFamily: 'monospace',
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -106,11 +92,7 @@ class AppTheme {
           minimumSize: const Size(double.infinity, 54),
           side: const BorderSide(color: primary),
           shape: const RoundedRectangleBorder(borderRadius: radius),
-          textStyle: const TextStyle(
-            fontFamily: 'monospace',
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(
@@ -150,18 +132,13 @@ class AppTheme {
         indicatorColor: lightBlue,
         elevation: 0,
         height: 70,
-        labelTextStyle: WidgetStatePropertyAll(
-          TextStyle(fontFamily: 'monospace', fontSize: 11),
-        ),
+        labelTextStyle: WidgetStatePropertyAll(TextStyle(fontSize: 11)),
         iconTheme: WidgetStatePropertyAll(IconThemeData(color: primary)),
       ),
       dividerTheme: const DividerThemeData(color: border, thickness: 1),
       snackBarTheme: const SnackBarThemeData(
         backgroundColor: textPrimary,
-        contentTextStyle: TextStyle(
-          fontFamily: 'monospace',
-          color: Colors.white,
-        ),
+        contentTextStyle: TextStyle(color: Colors.white),
         behavior: SnackBarBehavior.floating,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(color: primary),

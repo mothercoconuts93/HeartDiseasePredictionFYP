@@ -5,6 +5,7 @@ import '../../providers/auth_provider.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../../widgets/loading_indicator.dart';
+import '../../widgets/cardio_guard_logo.dart';
 import '../patient/patient_home_screen.dart';
 import '../practitioner/practitioner_home_screen.dart';
 import '../../themes/app_theme.dart';
@@ -23,6 +24,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final confirmPasswordController = TextEditingController();
 
   String selectedRole = 'Patient';
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
 
   @override
   void dispose() {
@@ -106,19 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: EdgeInsets.fromLTRB(24, 24, 24, bottomInset + 40),
                 child: Column(
                   children: [
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: const BoxDecoration(
-                        color: AppTheme.lightBlue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.favorite_border,
-                        size: 34,
-                        color: AppTheme.primary,
-                      ),
-                    ),
+                    const CardioGuardLogo(size: 68),
                     const SizedBox(height: 10),
                     const Text(
                       'Create Account',
@@ -185,7 +176,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       label: 'Password',
                       controller: passwordController,
                       icon: Icons.lock,
-                      obscureText: true,
+                      obscureText: obscurePassword,
+                      suffixIcon: IconButton(
+                        tooltip: obscurePassword
+                            ? 'Show password'
+                            : 'Hide password',
+                        icon: Icon(
+                          obscurePassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            obscurePassword = !obscurePassword;
+                          });
+                        },
+                      ),
                     ),
 
                     const SizedBox(height: 16),
@@ -194,7 +200,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       label: 'Confirm Password',
                       controller: confirmPasswordController,
                       icon: Icons.lock_outline,
-                      obscureText: true,
+                      obscureText: obscureConfirmPassword,
+                      suffixIcon: IconButton(
+                        tooltip: obscureConfirmPassword
+                            ? 'Show confirm password'
+                            : 'Hide confirm password',
+                        icon: Icon(
+                          obscureConfirmPassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            obscureConfirmPassword = !obscureConfirmPassword;
+                          });
+                        },
+                      ),
                     ),
 
                     const SizedBox(height: 24),

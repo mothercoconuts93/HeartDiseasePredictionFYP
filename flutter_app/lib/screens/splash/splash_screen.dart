@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../auth/login_screen.dart';
 import '../../themes/app_theme.dart';
+import '../../widgets/cardio_guard_logo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Icon(Icons.monitor_heart_outlined, color: Colors.white, size: 95),
+              CardioGuardLogo(size: 108),
               SizedBox(height: 20),
               Text(
                 'CARDIOGUARD',

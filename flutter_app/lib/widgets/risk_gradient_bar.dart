@@ -80,6 +80,7 @@ class RiskGradientBar extends StatelessWidget {
                           '${probability.clamp(0, 100).toStringAsFixed(0)}%',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
+                            fontFamily: 'monospace',
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                           ),

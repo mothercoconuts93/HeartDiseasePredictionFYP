@@ -5,6 +5,7 @@ import '../../providers/auth_provider.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../../widgets/loading_indicator.dart';
+import '../../widgets/cardio_guard_logo.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 import '../patient/patient_home_screen.dart';
@@ -91,19 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 const SizedBox(height: 30),
 
-                                Container(
-                                  width: 72,
-                                  height: 72,
-                                  decoration: const BoxDecoration(
-                                    color: AppTheme.lightBlue,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.monitor_heart_outlined,
-                                    size: 40,
-                                    color: AppTheme.primary,
-                                  ),
-                                ),
+                                const CardioGuardLogo(size: 76),
 
                                 const SizedBox(height: 20),
 
@@ -146,10 +135,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   icon: Icons.lock,
                                   obscureText: obscurePassword,
                                   suffixIcon: IconButton(
+                                    tooltip: obscurePassword
+                                        ? 'Show password'
+                                        : 'Hide password',
                                     icon: Icon(
                                       obscurePassword
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
+                                          ? Icons.visibility_off_outlined
+                                          : Icons.visibility_outlined,
                                     ),
                                     onPressed: () {
                                       setState(() {
