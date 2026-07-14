@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/user_model.dart';
 
@@ -45,10 +46,13 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    return await _auth.signInWithEmailAndPassword(
+    final credential = await _auth.signInWithEmailAndPassword(
       email: email.trim(),
       password: password.trim(),
     );
+
+    debugPrint('[Auth] Authenticated UID: ${credential.user?.uid}');
+    return credential;
   }
 
   Future<void> logoutUser() async {
@@ -63,8 +67,11 @@ class AuthService {
     final User? user = _auth.currentUser;
 
     if (user == null) {
+      debugPrint('[Auth] No authenticated Firebase user');
       return null;
     }
+
+    debugPrint('[Auth] Reading users/${user.uid}');
 
     final DocumentSnapshot document = await _firestore
         .collection('users')
@@ -72,9 +79,12 @@ class AuthService {
         .get();
 
     if (!document.exists) {
+      debugPrint('[Auth] Firestore user document does not exist');
       return null;
     }
 
-    return UserModel.fromMap(document.data() as Map<String, dynamic>);
+    final data = document.data() as Map<String, dynamic>;
+    debugPrint('[Auth] Firestore document data: $data');
+    return UserModel.fromMap(data);
   }
 }

@@ -69,10 +69,38 @@ class AuthGate extends StatelessWidget {
               );
             }
 
-            final role = authProvider.currentUserData?.role ?? 'Patient';
-            return role == 'Practitioner'
-                ? const PractitionerHomeScreen()
-                : const PatientHomeScreen();
+            if (userSnapshot.hasError) {
+              debugPrint(
+                '[AuthGate] Failed to load Firestore user data: '
+                '${userSnapshot.error}',
+              );
+              return const Scaffold(
+                body: Center(child: Text('Unable to load your user profile.')),
+              );
+            }
+
+            final role = authProvider.currentUserData?.role;
+            debugPrint(
+              '[AuthGate] Dashboard navigation decision: '
+              '${role == 'Practitioner'
+                  ? 'Practitioner'
+                  : role == 'Patient'
+                  ? 'Patient'
+                  : 'none'} '
+              '(loaded role: $role)',
+            );
+
+            if (role == 'Practitioner') {
+              return const PractitionerHomeScreen();
+            }
+
+            if (role == 'Patient') {
+              return const PatientHomeScreen();
+            }
+
+            return const Scaffold(
+              body: Center(child: Text('User profile or role not found.')),
+            );
           },
         );
       },

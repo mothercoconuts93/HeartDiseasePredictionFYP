@@ -7,6 +7,9 @@ import '../services/auth_service.dart';
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
 
+  Future<void>? _currentUserLoad;
+  String? _currentUserLoadUid;
+
   UserModel? currentUserData;
   bool isLoading = false;
   String? errorMessage;
@@ -36,6 +39,7 @@ class AuthProvider extends ChangeNotifier {
       );
 
       currentUserData = await _authService.getCurrentUserData();
+      debugPrint('[AuthProvider] Loaded role: ${currentUserData?.role}');
 
       isLoading = false;
       notifyListeners();
@@ -51,20 +55,32 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> login({required String email, required String password}) async {
+    var authenticated = false;
+
     try {
       isLoading = true;
       errorMessage = null;
       notifyListeners();
 
       await _authService.loginUser(email: email, password: password);
+      authenticated = true;
 
-      currentUserData = await _authService.getCurrentUserData();
+      await loadCurrentUserData();
 
       isLoading = false;
       notifyListeners();
 
       return true;
     } catch (error) {
+      if (authenticated) {
+        try {
+          await _authService.logoutUser();
+        } catch (logoutError) {
+          debugPrint('[AuthProvider] Failed to sign out: $logoutError');
+        }
+      }
+
+      currentUserData = null;
       isLoading = false;
       errorMessage = error.toString();
       notifyListeners();
@@ -100,8 +116,48 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> loadCurrentUserData() async {
-    currentUserData = await _authService.getCurrentUserData();
-    notifyListeners();
+  Future<void> loadCurrentUserData() {
+    final uid = _authService.currentUser?.uid;
+
+    if (uid == null) {
+      currentUserData = null;
+      return Future.value();
+    }
+
+    if (currentUserData?.uid == uid) {
+      return Future.value();
+    }
+
+    if (_currentUserLoadUid == uid && _currentUserLoad != null) {
+      return _currentUserLoad!;
+    }
+
+    currentUserData = null;
+    _currentUserLoadUid = uid;
+    final load = _loadCurrentUserData(uid);
+    _currentUserLoad = load;
+    return load;
+  }
+
+  Future<void> _loadCurrentUserData(String uid) async {
+    try {
+      final userData = await _authService.getCurrentUserData();
+
+      if (_authService.currentUser?.uid != uid) {
+        throw StateError('Authenticated user changed while loading profile');
+      }
+
+      if (userData == null) {
+        throw StateError('Firestore user profile not found');
+      }
+
+      currentUserData = userData;
+      debugPrint('[AuthProvider] Loaded role: ${currentUserData?.role}');
+    } finally {
+      if (_currentUserLoadUid == uid) {
+        _currentUserLoad = null;
+        _currentUserLoadUid = null;
+      }
+    }
   }
 }
