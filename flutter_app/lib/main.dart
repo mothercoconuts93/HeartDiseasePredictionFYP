@@ -80,15 +80,6 @@ class AuthGate extends StatelessWidget {
             }
 
             final role = authProvider.currentUserData?.role;
-            debugPrint(
-              '[AuthGate] Dashboard navigation decision: '
-              '${role == 'Practitioner'
-                  ? 'Practitioner'
-                  : role == 'Patient'
-                  ? 'Patient'
-                  : 'none'} '
-              '(loaded role: $role)',
-            );
 
             if (role == 'Practitioner') {
               return const PractitionerHomeScreen();

@@ -46,15 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (success) {
       final role = authProvider.currentUserData?.role;
-      debugPrint(
-        '[Login] Dashboard navigation decision: '
-        '${role == 'Practitioner'
-            ? 'Practitioner'
-            : role == 'Patient'
-            ? 'Patient'
-            : 'none'} '
-        '(loaded role: $role)',
-      );
 
       if (role != 'Practitioner' && role != 'Patient') {
         ScaffoldMessenger.of(context).showSnackBar(

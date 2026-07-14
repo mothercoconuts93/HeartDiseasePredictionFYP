@@ -39,7 +39,6 @@ class AuthProvider extends ChangeNotifier {
       );
 
       currentUserData = await _authService.getCurrentUserData();
-      debugPrint('[AuthProvider] Loaded role: ${currentUserData?.role}');
 
       isLoading = false;
       notifyListeners();
@@ -152,7 +151,6 @@ class AuthProvider extends ChangeNotifier {
       }
 
       currentUserData = userData;
-      debugPrint('[AuthProvider] Loaded role: ${currentUserData?.role}');
     } finally {
       if (_currentUserLoadUid == uid) {
         _currentUserLoad = null;
