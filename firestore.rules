@@ -1,0 +1,75 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function currentUserData() {
+      return get(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data;
+    }
+
+    function isPractitioner() {
+      return signedIn() &&
+             currentUserData().role == "Practitioner";
+    }
+
+    // USERS COLLECTION
+    
+    match /users/{userId} {
+
+      // Public registration creates Patient accounts only.
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.role == "Patient";
+
+      // Patient reads own profile.
+      // Practitioner reads all users.
+      allow read: if signedIn() &&
+        (
+          request.auth.uid == userId ||
+          isPractitioner()
+        );
+
+      // Patient updates own profile.
+      // Cannot change UID or role.
+      allow update: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.role == resource.data.role;
+
+      // Nobody deletes users from the client.
+      allow delete: if false;
+    }
+
+    // PREDICTIONS COLLECTION
+    
+    match /predictions/{predictionId} {
+
+      // User may only save their own prediction.
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid;
+
+      // Patient reads own predictions.
+      // Practitioner reads all predictions.
+      allow read: if signedIn()
+        && (
+          resource.data.userId == request.auth.uid ||
+          isPractitioner()
+        );
+
+      // Prevent editing or deleting prediction history.
+      allow update, delete: if false;
+    }
+
+    // Deny everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

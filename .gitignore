@@ -4,5 +4,10 @@ __pycache__/
 *.py[cod]
 .env
 
+node_modules/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
 .dart_tool/
 build/

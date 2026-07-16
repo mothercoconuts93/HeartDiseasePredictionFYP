@@ -1,0 +1,15 @@
+{
+  "name": "cardioguard-firestore-rules-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Emulator-only tests for CardioGuard Firestore Security Rules",
+  "scripts": {
+    "test": "npm run test:rules",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-cardioguard-rules \"node --test tests/firestore.rules.test.js\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.1",
+    "firebase": "^12.16.0",
+    "firebase-tools": "^15.23.0"
+  }
+}
