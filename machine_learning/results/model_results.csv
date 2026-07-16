@@ -1,0 +1,5 @@
+model,accuracy,precision,recall,f1_score,roc_auc,cv_accuracy_mean,cv_accuracy_std,true_negatives,false_positives,false_negatives,true_positives
+DummyClassifier,0.610000,0.000000,0.000000,0.000000,0.500000,0.607500,0.002500,122,0,78,0
+LogisticRegression,0.870000,0.851351,0.807692,0.828947,0.951030,0.852500,0.014031,111,11,15,63
+DecisionTreeClassifier,1.000000,1.000000,1.000000,1.000000,1.000000,0.998750,0.002500,122,0,0,78
+RandomForestClassifier,0.990000,1.000000,0.974359,0.987013,1.000000,0.998750,0.002500,122,0,2,76

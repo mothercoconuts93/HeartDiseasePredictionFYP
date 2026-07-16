@@ -1,0 +1,33 @@
+CardioGuard Pipeline v2 Dataset Summary
+======================================
+Dataset path: C:\Users\guled\OneDrive\Desktop\HeartDiseasePredictionFYP\dataset\heart_disease_dataset.csv
+Dataset shape: (1000, 16)
+Feature count: 15
+Feature order: ['Age', 'Gender', 'Cholesterol', 'Blood Pressure', 'Heart Rate', 'Smoking', 'Alcohol Intake', 'Exercise Hours', 'Family History', 'Diabetes', 'Obesity', 'Stress Level', 'Blood Sugar', 'Exercise Induced Angina', 'Chest Pain Type']
+Target: Heart Disease
+Missing values: {'Alcohol Intake': 340}
+Complete duplicate rows: 0
+Full class distribution: {0: 608, 1: 392}
+Training rows: 800
+Test rows: 200
+Training class distribution: {0: 486, 1: 314}
+Test class distribution: {0: 122, 1: 78}
+Split: test_size=0.20, stratify=y, random_state=42
+Cross-validation: 5-fold StratifiedKFold on training partition, shuffle=True, random_state=42
+Production v2 artifact: C:\Users\guled\OneDrive\Desktop\HeartDiseasePredictionFYP\machine_learning\heart_pipeline_v2.pkl
+Production v2 SHA-256: 98f87f1d9f4764806ad3321fed5465de6bd36959c0ff1e7f8ca4b3d29f59769f
+
+Package versions
+----------------
+Python: 3.13.13
+pandas: 2.3.3
+NumPy: 2.5.1
+matplotlib: 3.11.0
+joblib: 1.5.3
+scikit-learn: 1.9.0
+
+Interpretation limitation
+-------------------------
+These results are an internal technical evaluation on one dataset.
+They do not establish clinical validity, safety, calibration, or generalization
+to external patient populations.
