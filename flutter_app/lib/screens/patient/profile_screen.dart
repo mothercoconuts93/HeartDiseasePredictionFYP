@@ -87,68 +87,66 @@ class ProfileScreen extends StatelessWidget {
         ),
         onProfile: () {},
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: AppTheme.lightBlue,
-              child: Icon(Icons.person, size: 60, color: AppTheme.primary),
-            ),
-            const SizedBox(height: 15),
-            Text(
-              user?.fullName ?? 'Patient User',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              user?.email ?? authProvider.firebaseUser?.email ?? '',
-              style: const TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(height: 30),
-            InfoCard(
-              icon: Icons.email,
-              title: 'Email',
-              subtitle: user?.email ?? authProvider.firebaseUser?.email ?? '',
-            ),
-            InfoCard(
-              icon: Icons.badge,
-              title: 'Role',
-              subtitle: user?.role ?? 'Patient',
-            ),
-            InfoCard(
-              icon: Icons.calendar_month,
-              title: 'Joined',
-              subtitle: user == null
-                  ? 'Unknown'
-                  : _formatJoinedDate(user.createdAt),
-            ),
-            Card(
-              margin: const EdgeInsets.only(bottom: 14),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.settings_outlined,
-                  color: AppTheme.primary,
-                ),
-                title: const Text('Settings'),
-                subtitle: const Text('Privacy, terms, and app preferences'),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
-                  );
-                },
+        children: [
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: AppTheme.lightBlue,
+            child: Icon(Icons.person, size: 60, color: AppTheme.primary),
+          ),
+          const SizedBox(height: 15),
+          Text(
+            user?.fullName ?? 'Patient User',
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            user?.email ?? authProvider.firebaseUser?.email ?? '',
+            style: const TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 30),
+          InfoCard(
+            icon: Icons.email,
+            title: 'Email',
+            subtitle: user?.email ?? authProvider.firebaseUser?.email ?? '',
+          ),
+          InfoCard(
+            icon: Icons.badge,
+            title: 'Role',
+            subtitle: user?.role ?? 'Patient',
+          ),
+          InfoCard(
+            icon: Icons.calendar_month,
+            title: 'Joined',
+            subtitle: user == null
+                ? 'Unknown'
+                : _formatJoinedDate(user.createdAt),
+          ),
+          Card(
+            margin: const EdgeInsets.only(bottom: 14),
+            child: ListTile(
+              leading: const Icon(
+                Icons.settings_outlined,
+                color: AppTheme.primary,
               ),
+              title: const Text('Settings'),
+              subtitle: const Text('Privacy, terms, and app preferences'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                );
+              },
             ),
-            const Spacer(),
-            CustomButton(
-              text: 'Logout',
-              icon: Icons.logout,
-              onPressed: () => logout(context),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 6),
+          CustomButton(
+            text: 'Logout',
+            icon: Icons.logout,
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
     );
   }
