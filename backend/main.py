@@ -1,6 +1,7 @@
 import logging
 import os
 from pathlib import Path
+from typing import Literal
 
 import joblib
 import pandas as pd
@@ -17,6 +18,36 @@ MODEL_PATH = Path(
     os.getenv("CARDIOGUARD_MODEL_PATH", PROJECT_ROOT / "machine_learning" / "heart_model.pkl")
 )
 model = joblib.load(MODEL_PATH)
+
+PIPELINE_V2_PATH = Path(
+    os.getenv(
+        "CARDIOGUARD_PIPELINE_V2_PATH",
+        PROJECT_ROOT / "machine_learning" / "heart_pipeline_v2.pkl",
+    )
+)
+try:
+    pipeline_v2 = joblib.load(PIPELINE_V2_PATH)
+except Exception as error:
+    logger.exception("Unable to load Random Forest Pipeline v2: %s", error)
+    pipeline_v2 = None
+
+FEATURE_COLUMNS = [
+    "Age",
+    "Gender",
+    "Cholesterol",
+    "Blood Pressure",
+    "Heart Rate",
+    "Smoking",
+    "Alcohol Intake",
+    "Exercise Hours",
+    "Family History",
+    "Diabetes",
+    "Obesity",
+    "Stress Level",
+    "Blood Sugar",
+    "Exercise Induced Angina",
+    "Chest Pain Type",
+]
 
 # FastAPI Configuration
 app = FastAPI(
@@ -70,6 +101,34 @@ class PatientData(BaseModel):
 
     Chest_Pain_Type: int = Field(..., ge=0, le=3)
 
+
+class PatientDataV2(BaseModel):
+    Age: int = Field(..., ge=18, le=120)
+    Gender: Literal["Female", "Male"]
+
+    Cholesterol: int = Field(..., ge=50, le=500)
+    Blood_Pressure: int = Field(..., ge=60, le=250)
+    Heart_Rate: int = Field(..., ge=30, le=220)
+
+    Smoking: Literal["Current", "Former", "Never"]
+    Alcohol_Intake: Literal["Heavy", "Moderate", "Unknown"]
+    Exercise_Hours: int = Field(..., ge=0, le=24)
+
+    Family_History: Literal["No", "Yes"]
+    Diabetes: Literal["No", "Yes"]
+    Obesity: Literal["No", "Yes"]
+
+    Stress_Level: int = Field(..., ge=1, le=10)
+    Blood_Sugar: int = Field(..., ge=50, le=500)
+
+    Exercise_Induced_Angina: Literal["No", "Yes"]
+    Chest_Pain_Type: Literal[
+        "Asymptomatic",
+        "Atypical Angina",
+        "Non-anginal Pain",
+        "Typical Angina",
+    ]
+
 # Response Model
 class PredictionResponse(BaseModel):
     prediction: int
@@ -118,6 +177,10 @@ def health():
         "service": "cardioguard-prediction-api",
         "version": app.version,
         "model": "Random Forest",
+        "artifacts": {
+            "v1": model is not None,
+            "v2": pipeline_v2 is not None,
+        },
     }
 
 # Prediction Endpoint
@@ -162,6 +225,59 @@ def predict(data: PatientData):
         )
     except Exception as error:
         logger.exception("Prediction failed: %s", error)
+        raise HTTPException(
+            status_code=500,
+            detail="Prediction could not be completed.",
+        ) from error
+
+
+@app.post("/predict/v2", response_model=PredictionResponse)
+def predict_v2(data: PatientDataV2):
+    if pipeline_v2 is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Prediction pipeline v2 is unavailable.",
+        )
+
+    try:
+        patient_data = pd.DataFrame(
+            [
+                {
+                    "Age": data.Age,
+                    "Gender": data.Gender,
+                    "Cholesterol": data.Cholesterol,
+                    "Blood Pressure": data.Blood_Pressure,
+                    "Heart Rate": data.Heart_Rate,
+                    "Smoking": data.Smoking,
+                    "Alcohol Intake": data.Alcohol_Intake,
+                    "Exercise Hours": data.Exercise_Hours,
+                    "Family History": data.Family_History,
+                    "Diabetes": data.Diabetes,
+                    "Obesity": data.Obesity,
+                    "Stress Level": data.Stress_Level,
+                    "Blood Sugar": data.Blood_Sugar,
+                    "Exercise Induced Angina": data.Exercise_Induced_Angina,
+                    "Chest Pain Type": data.Chest_Pain_Type,
+                }
+            ],
+            columns=FEATURE_COLUMNS,
+        )
+
+        prediction = pipeline_v2.predict(patient_data)[0]
+        probability = pipeline_v2.predict_proba(patient_data)[0][1]
+        probability = round(float(probability) * 100, 2)
+
+        risk_level, recommendation = classify_risk(probability)
+        return PredictionResponse(
+            prediction=int(prediction),
+            risk_level=risk_level,
+            probability=probability,
+            recommendation=recommendation,
+            model="Random Forest Pipeline v2",
+            status="Prediction Completed Successfully",
+        )
+    except Exception as error:
+        logger.exception("Pipeline v2 prediction failed: %s", error)
         raise HTTPException(
             status_code=500,
             detail="Prediction could not be completed.",

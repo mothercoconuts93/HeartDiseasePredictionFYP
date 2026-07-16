@@ -27,8 +27,8 @@ class _PredictionScreenState extends State<PredictionScreen> {
   final stressController = TextEditingController();
 
   String gender = 'Male';
-  String smoking = 'No';
-  String alcohol = 'No';
+  String smoking = 'Never';
+  String alcohol = 'Unknown';
   String familyHistory = 'No';
   String diabetes = 'No';
   String obesity = 'No';
@@ -45,25 +45,6 @@ class _PredictionScreenState extends State<PredictionScreen> {
     exerciseController.dispose();
     stressController.dispose();
     super.dispose();
-  }
-
-  int yesNoToInt(String value) => value == 'Yes' ? 1 : 0;
-
-  int genderToInt(String value) => value == 'Male' ? 1 : 0;
-
-  int chestPainToInt(String value) {
-    switch (value) {
-      case 'Typical Angina':
-        return 0;
-      case 'Atypical Angina':
-        return 1;
-      case 'Non-anginal Pain':
-        return 2;
-      case 'Asymptomatic':
-        return 3;
-      default:
-        return 0;
-    }
   }
 
   int parseInt(TextEditingController controller) {
@@ -186,20 +167,20 @@ class _PredictionScreenState extends State<PredictionScreen> {
 
     final assessment = HealthAssessmentModel(
       age: parseInt(ageController),
-      gender: genderToInt(gender),
+      gender: gender,
       cholesterol: parseInt(cholesterolController),
       bloodPressure: parseInt(bpController),
       heartRate: parseInt(heartRateController),
-      smoking: yesNoToInt(smoking),
-      alcoholIntake: yesNoToInt(alcohol),
+      smoking: smoking,
+      alcoholIntake: alcohol,
       exerciseHours: parseInt(exerciseController),
-      familyHistory: yesNoToInt(familyHistory),
-      diabetes: yesNoToInt(diabetes),
-      obesity: yesNoToInt(obesity),
+      familyHistory: familyHistory,
+      diabetes: diabetes,
+      obesity: obesity,
       stressLevel: parseInt(stressController),
       bloodSugar: parseInt(bloodSugarController),
-      exerciseInducedAngina: yesNoToInt(angina),
-      chestPainType: chestPainToInt(chestPain),
+      exerciseInducedAngina: angina,
+      chestPainType: chestPain,
     );
 
     final predictionProvider = Provider.of<PredictionProvider>(
@@ -284,7 +265,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Gender',
                           value: gender,
-                          items: const ['Male', 'Female'],
+                          items: genderOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => gender = value);
@@ -346,7 +327,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Smoking',
                           value: smoking,
-                          items: const ['No', 'Yes'],
+                          items: smokingOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => smoking = value);
@@ -355,7 +336,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Alcohol Intake',
                           value: alcohol,
-                          items: const ['No', 'Yes'],
+                          items: alcoholIntakeOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => alcohol = value);
@@ -370,7 +351,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Family History',
                           value: familyHistory,
-                          items: const ['No', 'Yes'],
+                          items: yesNoOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => familyHistory = value);
@@ -379,7 +360,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Diabetes',
                           value: diabetes,
-                          items: const ['No', 'Yes'],
+                          items: yesNoOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => diabetes = value);
@@ -388,7 +369,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Obesity',
                           value: obesity,
-                          items: const ['No', 'Yes'],
+                          items: yesNoOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => obesity = value);
@@ -403,7 +384,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Exercise Induced Angina',
                           value: angina,
-                          items: const ['No', 'Yes'],
+                          items: yesNoOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => angina = value);
@@ -412,12 +393,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         _dropdown(
                           label: 'Chest Pain Type',
                           value: chestPain,
-                          items: const [
-                            'Typical Angina',
-                            'Atypical Angina',
-                            'Non-anginal Pain',
-                            'Asymptomatic',
-                          ],
+                          items: chestPainTypeOptions,
                           onChanged: (value) {
                             if (value == null) return;
                             setState(() => chestPain = value);

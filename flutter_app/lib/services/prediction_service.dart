@@ -16,6 +16,10 @@ class PredictionServiceException implements Exception {
 }
 
 class PredictionService {
+  final http.Client _client;
+
+  PredictionService({http.Client? client}) : _client = client ?? http.Client();
+
   String get baseUrl {
     const configuredUrl = String.fromEnvironment('CARDIOGUARD_API_URL');
     if (configuredUrl.isNotEmpty) return configuredUrl;
@@ -29,10 +33,10 @@ class PredictionService {
   Future<Map<String, dynamic>> predictHeartDisease(
     HealthAssessmentModel assessment,
   ) async {
-    final Uri url = Uri.parse('$baseUrl/predict');
+    final Uri url = Uri.parse('$baseUrl/predict/v2');
 
     try {
-      final response = await http
+      final response = await _client
           .post(
             url,
             headers: {'Content-Type': 'application/json'},

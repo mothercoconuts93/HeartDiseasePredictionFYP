@@ -1,19 +1,30 @@
+const genderOptions = ['Female', 'Male'];
+const smokingOptions = ['Current', 'Former', 'Never'];
+const alcoholIntakeOptions = ['Heavy', 'Moderate', 'Unknown'];
+const yesNoOptions = ['No', 'Yes'];
+const chestPainTypeOptions = [
+  'Typical Angina',
+  'Atypical Angina',
+  'Non-anginal Pain',
+  'Asymptomatic',
+];
+
 class HealthAssessmentModel {
   final int age;
-  final int gender;
+  final String gender;
   final int cholesterol;
   final int bloodPressure;
   final int heartRate;
-  final int smoking;
-  final int alcoholIntake;
+  final String smoking;
+  final String alcoholIntake;
   final int exerciseHours;
-  final int familyHistory;
-  final int diabetes;
-  final int obesity;
+  final String familyHistory;
+  final String diabetes;
+  final String obesity;
   final int stressLevel;
   final int bloodSugar;
-  final int exerciseInducedAngina;
-  final int chestPainType;
+  final String exerciseInducedAngina;
+  final String chestPainType;
 
   HealthAssessmentModel({
     required this.age,

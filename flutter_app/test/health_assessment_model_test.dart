@@ -5,38 +5,49 @@ void main() {
   test('assessment maps every API field without renaming values', () {
     final assessment = HealthAssessmentModel(
       age: 50,
-      gender: 1,
+      gender: 'Male',
       cholesterol: 200,
       bloodPressure: 120,
       heartRate: 75,
-      smoking: 0,
-      alcoholIntake: 0,
+      smoking: 'Never',
+      alcoholIntake: 'Unknown',
       exerciseHours: 2,
-      familyHistory: 1,
-      diabetes: 0,
-      obesity: 0,
+      familyHistory: 'Yes',
+      diabetes: 'No',
+      obesity: 'No',
       stressLevel: 5,
       bloodSugar: 100,
-      exerciseInducedAngina: 0,
-      chestPainType: 1,
+      exerciseInducedAngina: 'No',
+      chestPainType: 'Typical Angina',
     );
 
     expect(assessment.toJson(), {
       'Age': 50,
-      'Gender': 1,
+      'Gender': 'Male',
       'Cholesterol': 200,
       'Blood_Pressure': 120,
       'Heart_Rate': 75,
-      'Smoking': 0,
-      'Alcohol_Intake': 0,
+      'Smoking': 'Never',
+      'Alcohol_Intake': 'Unknown',
       'Exercise_Hours': 2,
-      'Family_History': 1,
-      'Diabetes': 0,
-      'Obesity': 0,
+      'Family_History': 'Yes',
+      'Diabetes': 'No',
+      'Obesity': 'No',
       'Stress_Level': 5,
       'Blood_Sugar': 100,
-      'Exercise_Induced_Angina': 0,
-      'Chest_Pain_Type': 1,
+      'Exercise_Induced_Angina': 'No',
+      'Chest_Pain_Type': 'Typical Angina',
     });
+  });
+
+  test('v2 categorical options preserve the production string contract', () {
+    expect(smokingOptions, ['Current', 'Former', 'Never']);
+    expect(alcoholIntakeOptions, ['Heavy', 'Moderate', 'Unknown']);
+    expect(chestPainTypeOptions, [
+      'Typical Angina',
+      'Atypical Angina',
+      'Non-anginal Pain',
+      'Asymptomatic',
+    ]);
   });
 }
