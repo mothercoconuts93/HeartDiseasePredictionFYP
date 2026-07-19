@@ -34,7 +34,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password reset link sent successfully.')),
+        const SnackBar(
+          content: Text(
+            'If an account exists for this email, a password reset link has been sent. Please check your inbox and spam folder.',
+          ),
+        ),
       );
       Navigator.pop(context);
     } else {
