@@ -51,7 +51,7 @@ FEATURE_COLUMNS = [
 
 # FastAPI Configuration
 app = FastAPI(
-    title="Heart Disease Prediction API",
+    title="CardioGuard Prediction API",
     description="Random Forest Heart Disease Prediction System",
     version="1.0.0",
     contact={
@@ -166,7 +166,8 @@ def classify_risk(probability: float) -> tuple[str, str]:
 @app.get("/")
 def home():
     return {
-        "message": "Heart Disease Prediction API Running Successfully"
+        "service": "CardioGuard Prediction API",
+        "status": "running",
     }
 
 
@@ -174,7 +175,7 @@ def home():
 def health():
     return {
         "status": "healthy",
-        "service": "cardioguard-prediction-api",
+        "service": "CardioGuard Prediction API",
         "version": app.version,
         "model": "Random Forest",
         "artifacts": {

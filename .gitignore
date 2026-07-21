@@ -1,7 +1,10 @@
 venv/
 .venv/
+render_test_env/
 __pycache__/
+**/__pycache__/
 *.py[cod]
+.pytest_cache/
 .env
 
 node_modules/
@@ -11,3 +14,14 @@ ui-debug.log
 
 .dart_tool/
 build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
+
+serviceAccountKey.json
+firebase-adminsdk*.json
