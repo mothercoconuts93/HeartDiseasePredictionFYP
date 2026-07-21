@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/health_assessment_model.dart';
@@ -23,11 +22,7 @@ class PredictionService {
   String get baseUrl {
     const configuredUrl = String.fromEnvironment('CARDIOGUARD_API_URL');
     if (configuredUrl.isNotEmpty) return configuredUrl;
-    if (kIsWeb) {
-      return 'http://localhost:8000';
-    } else {
-      return 'http://10.0.2.2:8000';
-    }
+    return 'https://cardioguard-api-540d.onrender.com';
   }
 
   Future<Map<String, dynamic>> predictHeartDisease(
