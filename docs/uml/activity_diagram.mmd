@@ -1,0 +1,106 @@
+flowchart TB
+    subgraph PatientLane["Patient"]
+        direction TB
+        Start((Start))
+        OpenAssessment["Open health assessment"]
+        EnterValues["Enter 15 assessment values"]
+        CorrectValues["Correct highlighted assessment values"]
+        ViewResult["Review prediction result"]
+        ViewHistoryChoice{"View prediction history?"}
+        OpenHistory["Open Prediction History"]
+        EndSuccess((End))
+        EndUnauthenticated((End))
+        EndFailure((End))
+    end
+
+    subgraph FlutterLane["Flutter Application"]
+        direction TB
+        CheckUser["Check FirebaseAuth.currentUser"]
+        RedirectLogin["Redirect to Login through the AuthGate signed-out state"]
+        ValidateForm{"Form valid?"}
+        DisplayValidation["Display validation errors"]
+        ConstructModel["Construct HealthAssessmentModel"]
+        SendRequest["Send POST /predict/v2"]
+        HttpSuccess{"Request delivered to FastAPI?"}
+        DisplayApiError["Display API or inference failure"]
+        GenerateUuid["Generate prediction UUID and create PredictionModel"]
+        RequestSave["Call FirestoreService.savePrediction()"]
+        DisplaySaveError["Display Firestore save failure"]
+        DisplayResult["Open ResultScreen"]
+        DisplayHistory["Display the authenticated patient's prediction history"]
+    end
+
+    subgraph FirebaseLane["Firebase Authentication"]
+        direction TB
+        Authenticated{"Authenticated Firebase user exists?"}
+    end
+
+    subgraph FastApiLane["FastAPI Backend"]
+        direction TB
+        ValidateRequest{"PatientDataV2 valid?"}
+        ValidationFailure["Return HTTP 422"]
+        OrderedFrame["Create one-row DataFrame in the exact 15-column order"]
+        InferenceResponse{"Inference successful?"}
+        InferenceFailure["Return sanitised HTTP 500 error"]
+        ClassifyRisk["Classify risk and prepare JSON response"]
+        ReturnResponse["Return prediction, risk_level, probability, recommendation, model and status"]
+    end
+
+    subgraph PipelineLane["Random Forest Pipeline"]
+        direction TB
+        Preprocess["Run numeric imputation, categorical imputation and one-hot encoding"]
+        Predict["Execute RandomForestClassifier predict() and predict_proba()"]
+    end
+
+    subgraph FirestoreLane["Cloud Firestore"]
+        direction TB
+        SaveDocument["Write predictions/{UUID}"]
+        SaveSucceeded{"Write successful?"}
+        ReadHistory["Query predictions where userId equals authenticated UID"]
+    end
+
+    Start --> OpenAssessment
+    OpenAssessment --> CheckUser
+    CheckUser --> Authenticated
+    Authenticated -- "No" --> RedirectLogin
+    RedirectLogin --> EndUnauthenticated
+    Authenticated -- "Yes" --> EnterValues
+    EnterValues --> ValidateForm
+    ValidateForm -- "No" --> DisplayValidation
+    DisplayValidation --> CorrectValues
+    CorrectValues --> EnterValues
+    ValidateForm -- "Yes" --> ConstructModel
+    ConstructModel --> SendRequest
+    SendRequest --> HttpSuccess
+    HttpSuccess -- "No: network or HTTP transport failure" --> DisplayApiError
+    DisplayApiError --> EndFailure
+    HttpSuccess -- "Request reaches FastAPI" --> ValidateRequest
+    ValidateRequest -- "No" --> ValidationFailure
+    ValidationFailure --> DisplayApiError
+    ValidateRequest -- "Yes" --> OrderedFrame
+    OrderedFrame --> Preprocess
+    Preprocess --> Predict
+    Predict --> InferenceResponse
+    InferenceResponse -- "No" --> InferenceFailure
+    InferenceFailure --> DisplayApiError
+    InferenceResponse -- "Yes" --> ClassifyRisk
+    ClassifyRisk --> ReturnResponse
+    ReturnResponse --> GenerateUuid
+    GenerateUuid --> RequestSave
+    RequestSave --> SaveDocument
+    SaveDocument --> SaveSucceeded
+    SaveSucceeded -- "No" --> DisplaySaveError
+    DisplaySaveError --> EndFailure
+    SaveSucceeded -- "Yes" --> DisplayResult
+    DisplayResult --> ViewResult
+    ViewResult --> ViewHistoryChoice
+    ViewHistoryChoice -- "No" --> EndSuccess
+    ViewHistoryChoice -- "Yes" --> OpenHistory
+    OpenHistory --> ReadHistory
+    ReadHistory --> DisplayHistory
+    DisplayHistory --> EndSuccess
+
+    classDef decision fill:#fff7ed,stroke:#9a3412,stroke-width:1.5px,color:#111827;
+    classDef error fill:#fef2f2,stroke:#b91c1c,stroke-width:1.5px,color:#111827;
+    class Authenticated,ValidateForm,HttpSuccess,ValidateRequest,InferenceResponse,SaveSucceeded,ViewHistoryChoice decision;
+    class RedirectLogin,DisplayValidation,DisplayApiError,ValidationFailure,InferenceFailure,DisplaySaveError error;

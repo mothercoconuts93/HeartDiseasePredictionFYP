@@ -1,0 +1,77 @@
+flowchart LR
+    Patient["Patient"]
+    Practitioner["Practitioner"]
+    Firebase["Firebase Authentication"]
+    FastAPI["FastAPI Prediction API"]
+
+    subgraph CardioGuard["CardioGuard Heart Disease Prediction System"]
+        direction TB
+
+        subgraph Shared["Shared Account and Information Services"]
+            direction TB
+            UC01(["Register Account"])
+            UC02(["Login"])
+            UC03(["Reset Password"])
+            UC04(["Log Out"])
+            UC05(["View Profile"])
+            UC12(["View Privacy Policy and Terms"])
+        end
+
+        subgraph PatientServices["Patient Services"]
+            direction TB
+            UC06(["Complete Health Assessment"])
+            UC07(["Generate Heart Disease Prediction"])
+            UC08(["View Prediction Result"])
+            UC09(["View Health Recommendations"])
+            UC10(["View Prediction History"])
+            UC11(["View Prediction Details"])
+        end
+
+        subgraph PractitionerServices["Practitioner Services"]
+            direction TB
+            UC13(["View Practitioner Dashboard"])
+            UC14(["View Patient List"])
+            UC15(["View Patient Details"])
+            UC16(["View Assessment History"])
+            UC17(["View Selected Assessment"])
+        end
+    end
+
+    Patient --- UC01
+    Patient --- UC02
+    Patient --- UC03
+    Patient --- UC04
+    Patient --- UC05
+    Patient --- UC06
+    Patient --- UC08
+    Patient --- UC09
+    Patient --- UC10
+    Patient --- UC11
+    Patient --- UC12
+
+    Practitioner --- UC02
+    Practitioner --- UC03
+    Practitioner --- UC04
+    Practitioner --- UC05
+    Practitioner --- UC12
+    Practitioner --- UC13
+    Practitioner --- UC14
+    Practitioner --- UC15
+    Practitioner --- UC16
+    Practitioner --- UC17
+
+    UC03 -. "«extend»" .-> UC02
+    UC06 -. "«include»" .-> UC07
+
+    Firebase --- UC01
+    Firebase --- UC02
+    Firebase --- UC03
+    Firebase --- UC04
+    FastAPI --- UC07
+
+    classDef humanActor fill:#ffffff,stroke:#111827,stroke-width:2px,color:#111827;
+    classDef externalActor fill:#f3f4f6,stroke:#4b5563,stroke-width:1.5px,color:#111827;
+    classDef useCase fill:#ffffff,stroke:#1f4e79,stroke-width:1.5px,color:#111827;
+    class Patient,Practitioner humanActor;
+    class Firebase,FastAPI externalActor;
+    class UC01,UC02,UC03,UC04,UC05,UC06,UC07,UC08,UC09,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17 useCase;
