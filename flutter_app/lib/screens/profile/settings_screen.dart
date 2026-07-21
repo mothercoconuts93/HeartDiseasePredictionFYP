@@ -53,14 +53,6 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           _switchTile(
-            icon: Icons.notifications,
-            title: 'Notifications',
-            subtitle: 'Coming soon — push notifications are not configured',
-            value: false,
-            enabled: false,
-          ),
-
-          _switchTile(
             icon: Icons.dark_mode,
             title: 'Dark Mode',
             subtitle:

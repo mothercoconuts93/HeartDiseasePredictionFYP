@@ -32,7 +32,7 @@ class PredictionDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           Text(
-            'Assessment Details',
+            'Prediction Details',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 6),

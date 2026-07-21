@@ -65,7 +65,7 @@ class PatientHomeScreen extends StatelessWidget {
               DashboardCard(
                 icon: Icons.history,
                 title: 'Prediction History',
-                subtitle: 'Review previous assessment results',
+                subtitle: 'Review previous prediction results',
                 onTap: () {
                   Navigator.push(
                     context,

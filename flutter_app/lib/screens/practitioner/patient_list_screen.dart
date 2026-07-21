@@ -80,7 +80,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
             a.prediction?.probability ?? -1,
           ),
         );
-      case 'Latest assessment':
+      case 'Latest prediction':
         records.sort(
           (a, b) => (b.prediction?.createdAt ?? DateTime(1970)).compareTo(
             a.prediction?.createdAt ?? DateTime(1970),
@@ -208,8 +208,8 @@ class _PatientListScreenState extends State<PatientListScreen> {
                                   child: Text('Highest risk'),
                                 ),
                                 DropdownMenuItem(
-                                  value: 'Latest assessment',
-                                  child: Text('Latest assessment'),
+                                  value: 'Latest prediction',
+                                  child: Text('Latest prediction'),
                                 ),
                               ],
                               onChanged: (value) {
@@ -297,7 +297,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
                                               ),
                                               const SizedBox(height: 6),
                                               Text(
-                                                'Last assessment: ${_formatDate(latestPrediction.createdAt)}',
+                                                'Latest prediction: ${_formatDate(latestPrediction.createdAt)}',
                                                 style: const TextStyle(
                                                   fontSize: 11,
                                                 ),

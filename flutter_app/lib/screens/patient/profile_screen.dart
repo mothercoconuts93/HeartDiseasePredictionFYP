@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (dialogContext) => AlertDialog(
         title: const Text('Log out?'),
         content: const Text(
-          'You will need to sign in again to view your assessments.',
+          'You will need to sign in again to view your predictions.',
         ),
         actions: [
           TextButton(

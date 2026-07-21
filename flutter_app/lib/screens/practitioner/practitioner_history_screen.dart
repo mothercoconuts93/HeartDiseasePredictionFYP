@@ -64,7 +64,7 @@ class PractitionerHistoryScreen extends StatelessWidget {
               }
               if (predictionSnapshot.hasError) {
                 return const Center(
-                  child: Text('Unable to load assessment history.'),
+                  child: Text('Unable to load prediction history.'),
                 );
               }
               final predictions = predictionSnapshot.data ?? [];
@@ -78,12 +78,12 @@ class PractitionerHistoryScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Assessment History',
+                          'Prediction History',
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          '${predictions.length} recorded assessment${predictions.length == 1 ? '' : 's'}',
+                          '${predictions.length} recorded prediction${predictions.length == 1 ? '' : 's'}',
                           style: const TextStyle(color: AppTheme.textSecondary),
                         ),
                       ],
@@ -92,7 +92,7 @@ class PractitionerHistoryScreen extends StatelessWidget {
                   Expanded(
                     child: predictions.isEmpty
                         ? const Center(
-                            child: Text('No patient assessments found.'),
+                            child: Text('No patient predictions found.'),
                           )
                         : ListView.builder(
                             padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),

@@ -71,9 +71,9 @@ class PatientDetailScreen extends StatelessWidget {
             const SizedBox(height: 25),
             InfoCard(
               icon: Icons.calendar_month,
-              title: 'Last Assessment',
+              title: 'Latest Prediction',
               subtitle: prediction == null
-                  ? 'No assessment yet'
+                  ? 'No prediction yet'
                   : formatDate(prediction.createdAt),
               color: AppTheme.primary,
             ),
