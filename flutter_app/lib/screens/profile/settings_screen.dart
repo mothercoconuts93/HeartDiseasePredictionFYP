@@ -26,25 +26,6 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _switchTile({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required bool value,
-    required bool enabled,
-  }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 14),
-      child: SwitchListTile(
-        secondary: Icon(icon, color: AppTheme.primary),
-        title: Text(title),
-        subtitle: Text(subtitle),
-        value: value,
-        onChanged: enabled ? (_) {} : null,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,15 +33,6 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          _switchTile(
-            icon: Icons.dark_mode,
-            title: 'Dark Mode',
-            subtitle:
-                'Coming soon — the current release uses the clinical light theme',
-            value: false,
-            enabled: false,
-          ),
-
           _settingsTile(
             icon: Icons.privacy_tip,
             title: 'Privacy Policy',
