@@ -1,7 +1,10 @@
+// Consistent progress indicator with an optional operation message.
+
 import 'package:flutter/material.dart';
 
 import '../themes/app_theme.dart';
 
+/// Communicates an in-progress asynchronous operation to the user.
 class LoadingIndicator extends StatelessWidget {
   final String message;
 

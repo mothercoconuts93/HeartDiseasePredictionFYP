@@ -1,3 +1,5 @@
+// Paginated Patient view of real-time prediction history.
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +13,7 @@ import 'patient_home_screen.dart';
 import 'profile_screen.dart';
 import 'prediction_detail_screen.dart';
 
+/// Streams only the signed-in Patient's saved prediction records.
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
@@ -21,12 +24,14 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   int _visibleCount = 10;
 
+  /// Maps the stored risk label to its list-item severity color.
   Color getRiskColor(String risk) {
     if (risk.contains('High')) return AppTheme.danger;
     if (risk.contains('Moderate')) return AppTheme.warning;
     return AppTheme.success;
   }
 
+  /// Formats prediction timestamps for concise history display.
   String formatDate(DateTime date) {
     const months = [
       'January',
@@ -46,6 +51,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 
+  /// Builds a consistent empty or unavailable history state.
   Widget _emptyState(String message) {
     return Center(
       child: Padding(

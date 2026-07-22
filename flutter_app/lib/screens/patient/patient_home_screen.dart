@@ -1,3 +1,5 @@
+// Patient dashboard linking the assessment, prediction history, and profile.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +12,7 @@ import 'profile_screen.dart';
 import 'health_recommendations_screen.dart';
 import '../../widgets/app_bottom_nav.dart';
 
+/// Presents the authenticated Patient's primary CardioGuard workflows.
 class PatientHomeScreen extends StatelessWidget {
   const PatientHomeScreen({super.key});
 

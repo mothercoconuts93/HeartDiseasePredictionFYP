@@ -1,5 +1,8 @@
+// Shared full-width primary action button.
+
 import 'package:flutter/material.dart';
 
+/// Applies consistent CardioGuard styling to primary screen actions.
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;

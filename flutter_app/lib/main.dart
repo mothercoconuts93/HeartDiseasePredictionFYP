@@ -1,3 +1,5 @@
+// Application bootstrap and authentication-aware root navigation.
+
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'screens/practitioner/practitioner_home_screen.dart';
 import 'widgets/loading_indicator.dart';
 import 'themes/app_theme.dart';
 
+/// Initializes Firebase before creating the Flutter widget tree.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -20,6 +23,7 @@ void main() async {
   runApp(const CardioGuard());
 }
 
+/// Root widget that registers application state providers and the visual theme.
 class CardioGuard extends StatelessWidget {
   const CardioGuard({super.key});
 
@@ -40,6 +44,7 @@ class CardioGuard extends StatelessWidget {
   }
 }
 
+/// Selects the login, Patient, or Practitioner entry screen from auth state.
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 

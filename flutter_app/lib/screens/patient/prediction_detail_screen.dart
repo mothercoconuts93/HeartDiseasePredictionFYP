@@ -1,3 +1,5 @@
+// Detailed Patient view of one stored prediction record.
+
 import 'package:flutter/material.dart';
 
 import '../../models/prediction_model.dart';
@@ -5,17 +7,20 @@ import '../../themes/app_theme.dart';
 import '../../widgets/risk_badge.dart';
 import '../../widgets/risk_gradient_bar.dart';
 
+/// Presents a historical prediction without exposing transient input values.
 class PredictionDetailScreen extends StatelessWidget {
   final PredictionModel prediction;
 
   const PredictionDetailScreen({super.key, required this.prediction});
 
+  /// Selects the severity accent associated with this prediction.
   Color get _riskColor {
     if (prediction.riskLevel.contains('High')) return AppTheme.danger;
     if (prediction.riskLevel.contains('Moderate')) return AppTheme.warning;
     return AppTheme.success;
   }
 
+  /// Formats the stored creation time for the detail header.
   String _formatDate(DateTime date) {
     final local = date.toLocal();
     final hour = local.hour % 12 == 0 ? 12 : local.hour % 12;

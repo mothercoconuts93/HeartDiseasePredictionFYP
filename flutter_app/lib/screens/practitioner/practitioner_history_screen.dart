@@ -1,3 +1,5 @@
+// Global Practitioner view of saved prediction records.
+
 import 'package:flutter/material.dart';
 
 import '../../models/prediction_model.dart';
@@ -10,15 +12,18 @@ import 'patient_detail_screen.dart';
 import 'practitioner_home_screen.dart';
 import 'practitioner_profile_screen.dart';
 
+/// Joins predictions to Patient profiles for selectable history rows.
 class PractitionerHistoryScreen extends StatelessWidget {
   const PractitionerHistoryScreen({super.key});
 
+  /// Formats Firestore prediction dates for the history list.
   String _formatDate(DateTime date) {
     final local = date.toLocal();
     final minute = local.minute.toString().padLeft(2, '0');
     return '${local.day}/${local.month}/${local.year} ${local.hour}:$minute';
   }
 
+  /// Maps each risk category to a visual severity color.
   Color _riskColor(String risk) {
     if (risk.contains('High')) return AppTheme.danger;
     if (risk.contains('Moderate')) return AppTheme.warning;

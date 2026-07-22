@@ -1,5 +1,8 @@
+// Persistent representation of a prediction returned by FastAPI.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Represents the prediction result saved in the `predictions` collection.
 class PredictionModel {
   final String predictionId;
   final String userId;
@@ -24,6 +27,7 @@ class PredictionModel {
     required this.createdAt,
   });
 
+  /// Serializes the prediction using the deployed Firestore field names.
   Map<String, dynamic> toMap() {
     return {
       'predictionId': predictionId,
@@ -36,6 +40,7 @@ class PredictionModel {
     };
   }
 
+  /// Reconstructs a prediction from a Firestore document map.
   factory PredictionModel.fromMap(Map<String, dynamic> map) {
     return PredictionModel(
       predictionId: map['predictionId'] ?? '',
@@ -48,18 +53,21 @@ class PredictionModel {
     );
   }
 
+  /// Accepts integer-like Firestore values without making reads type-fragile.
   static int _toInt(dynamic value) {
     if (value is int) return value;
     if (value is num) return value.toInt();
     return int.tryParse(value?.toString() ?? '') ?? 0;
   }
 
+  /// Accepts numeric or string probability values from existing documents.
   static double _toDouble(dynamic value) {
     if (value is double) return value;
     if (value is num) return value.toDouble();
     return double.tryParse(value?.toString() ?? '') ?? 0;
   }
 
+  /// Supports Firestore timestamps and the ISO strings written by this app.
   static DateTime _toDateTime(dynamic value) {
     if (value is Timestamp) return value.toDate();
     if (value is DateTime) return value;

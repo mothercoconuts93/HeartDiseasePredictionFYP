@@ -1,3 +1,5 @@
+// Practitioner detail view for a selected Patient and prediction result.
+
 import 'package:flutter/material.dart';
 
 import '../../models/prediction_model.dart';
@@ -6,6 +8,7 @@ import '../../widgets/info_card.dart';
 import '../../widgets/risk_badge.dart';
 import '../../themes/app_theme.dart';
 
+/// Presents Patient identity and the prediction supplied by the source screen.
 class PatientDetailScreen extends StatelessWidget {
   final UserModel patient;
   final PredictionModel? latestPrediction;
@@ -16,6 +19,7 @@ class PatientDetailScreen extends StatelessWidget {
     required this.latestPrediction,
   });
 
+  /// Selects a severity color for the optional prediction.
   Color get riskColor {
     final risk = latestPrediction?.riskLevel;
     if (risk == null) return AppTheme.textSecondary;
@@ -24,6 +28,7 @@ class PatientDetailScreen extends StatelessWidget {
     return AppTheme.success;
   }
 
+  /// Formats the selected prediction timestamp for display.
   String formatDate(DateTime date) {
     const months = [
       'January',

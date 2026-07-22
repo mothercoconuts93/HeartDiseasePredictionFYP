@@ -1,3 +1,5 @@
+// Searchable Practitioner directory combining Patient profiles and predictions.
+
 import 'package:flutter/material.dart';
 
 import '../../models/prediction_model.dart';
@@ -7,6 +9,7 @@ import '../../themes/app_theme.dart';
 import '../../widgets/risk_badge.dart';
 import 'patient_detail_screen.dart';
 
+/// Lets a Practitioner search, filter, sort, and select Patient records.
 class PatientListScreen extends StatefulWidget {
   const PatientListScreen({super.key});
 
@@ -26,16 +29,19 @@ class _PatientListScreenState extends State<PatientListScreen> {
     super.dispose();
   }
 
+  /// Maps a prediction's risk label to its directory accent color.
   Color _riskColor(String risk) {
     if (risk.contains('High')) return AppTheme.danger;
     if (risk.contains('Moderate')) return AppTheme.warning;
     return AppTheme.success;
   }
 
+  /// Formats a prediction date for compact Patient cards.
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
   }
 
+  /// Associates a Patient UID with the first, newest matching prediction.
   PredictionModel? _latestPredictionFor(
     String userId,
     List<PredictionModel> predictions,
@@ -46,6 +52,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
     return null;
   }
 
+  /// Joins streams in memory, then applies search, risk, sort, and pagination.
   List<_PatientRecord> _visibleRecords(
     List<UserModel> patients,
     List<PredictionModel> predictions,
@@ -333,6 +340,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
   }
 }
 
+/// Internal view model pairing a Patient profile with an optional prediction.
 class _PatientRecord {
   final UserModel patient;
   final PredictionModel? prediction;

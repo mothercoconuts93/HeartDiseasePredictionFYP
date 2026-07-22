@@ -1,3 +1,5 @@
+// Practitioner account summary, legal links, and logout workflow.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +14,11 @@ import '../profile/terms_screen.dart';
 import 'practitioner_history_screen.dart';
 import 'practitioner_home_screen.dart';
 
+/// Displays the authenticated Practitioner profile loaded from Firestore.
 class PractitionerProfileScreen extends StatelessWidget {
   const PractitionerProfileScreen({super.key});
 
+  /// Formats the Firestore account creation date for display.
   String _formatJoinedDate(DateTime date) {
     const months = [
       'January',
@@ -33,6 +37,7 @@ class PractitionerProfileScreen extends StatelessWidget {
     return '${months[date.month - 1]} ${date.year}';
   }
 
+  /// Confirms logout before clearing the Firebase session.
   Future<void> _logout(BuildContext context) async {
     final confirmed = await showDialog<bool>(
       context: context,

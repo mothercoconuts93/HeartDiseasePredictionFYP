@@ -1,5 +1,8 @@
+// Firestore-backed account profile shared by Patient and Practitioner roles.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Represents one document in the `users` collection.
 class UserModel {
   final String uid;
   final String fullName;
@@ -15,6 +18,7 @@ class UserModel {
     required this.createdAt,
   });
 
+  /// Serializes profile data for a Firestore write.
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
@@ -25,6 +29,7 @@ class UserModel {
     };
   }
 
+  /// Parses a profile while rejecting unsupported privilege roles.
   factory UserModel.fromMap(Map<String, dynamic> map) {
     final role = map['role'];
 
@@ -41,6 +46,7 @@ class UserModel {
     );
   }
 
+  /// Reads both current ISO strings and legacy/manual Firestore date values.
   static DateTime _parseDateTime(dynamic value) {
     if (value is Timestamp) {
       return value.toDate();

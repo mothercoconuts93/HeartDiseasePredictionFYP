@@ -1,9 +1,12 @@
+// Branded launch screen that transitions to authentication.
+
 import 'package:flutter/material.dart';
 
 import '../auth/login_screen.dart';
 import '../../themes/app_theme.dart';
 import '../../widgets/cardio_guard_logo.dart';
 
+/// Briefly presents CardioGuard branding before opening the login screen.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -19,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _goToLogin();
   }
 
+  /// Waits for the splash interval and replaces it with Login.
   Future<void> _goToLogin() async {
     await Future.delayed(const Duration(seconds: 2));
 

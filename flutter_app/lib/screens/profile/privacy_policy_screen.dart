@@ -1,8 +1,12 @@
+// Static in-app summary of CardioGuard privacy practices.
+
 import 'package:flutter/material.dart';
 
+/// Presents readable privacy information from authentication and settings.
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
 
+  /// Formats one policy heading and its explanatory paragraph.
   Widget _section(String title, String body) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 22),

@@ -1,9 +1,12 @@
+// Presentation state for authentication and role-based user-profile loading.
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 
+/// Exposes authentication state, loading status, and errors to Flutter screens.
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
 
@@ -22,6 +25,7 @@ class AuthProvider extends ChangeNotifier {
     return firebaseUser != null;
   }
 
+  /// Registers a Patient and loads the newly created Firestore profile.
   Future<bool> register({
     required String fullName,
     required String email,
@@ -53,6 +57,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  /// Authenticates a user and requires a valid role-bearing profile.
   Future<bool> login({required String email, required String password}) async {
     var authenticated = false;
 
@@ -88,12 +93,14 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  /// Signs out and clears locally cached profile state.
   Future<void> logout() async {
     await _authService.logoutUser();
     currentUserData = null;
     notifyListeners();
   }
 
+  /// Requests password recovery while exposing progress and failure state.
   Future<bool> resetPassword({required String email}) async {
     try {
       isLoading = true;
@@ -115,6 +122,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  /// Loads the current profile once and reuses an identical in-flight request.
   Future<void> loadCurrentUserData() {
     final uid = _authService.currentUser?.uid;
 
@@ -138,6 +146,7 @@ class AuthProvider extends ChangeNotifier {
     return load;
   }
 
+  /// Rejects stale results if the authenticated UID changes during the read.
   Future<void> _loadCurrentUserData(String uid) async {
     try {
       final userData = await _authService.getCurrentUserData();

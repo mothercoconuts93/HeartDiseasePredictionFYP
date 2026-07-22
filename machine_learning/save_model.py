@@ -1,3 +1,5 @@
+"""Train and serialize the legacy Random Forest model used by API V1."""
+
 import pandas as pd
 import joblib
 

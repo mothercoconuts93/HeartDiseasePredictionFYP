@@ -1,3 +1,5 @@
+// Email/password sign-in screen and role-based dashboard transition.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,7 @@ import '../../themes/app_theme.dart';
 import '../profile/privacy_policy_screen.dart';
 import '../profile/terms_screen.dart';
 
+/// Authenticates an existing account and opens its authorized dashboard.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -34,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  /// Delegates authentication to [AuthProvider] and routes by Firestore role.
   Future<void> loginUser() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 

@@ -1,3 +1,5 @@
+"""Inspect duplicate removal and categorical encoding on the source dataset."""
+
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 

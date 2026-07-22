@@ -1,3 +1,5 @@
+"""Train, validate, and serialize the production preprocessing/model pipeline."""
+
 import csv
 import hashlib
 from pathlib import Path
@@ -66,6 +68,8 @@ CATEGORICAL_COLUMNS = [
 
 
 def validate_dataset_contract(dataframe: pd.DataFrame) -> None:
+    """Reject schema, category, target, or duplicate-data contract violations."""
+
     with DATASET_PATH.open("r", encoding="utf-8-sig", newline="") as dataset_file:
         header = next(csv.reader(dataset_file))
 
@@ -98,6 +102,8 @@ def validate_dataset_contract(dataframe: pd.DataFrame) -> None:
 
 
 def build_pipeline() -> Pipeline:
+    """Build preprocessing and Random Forest stages as one inference artifact."""
+
     numeric_pipeline = Pipeline(
         steps=[("imputer", SimpleImputer(strategy="median"))]
     )
@@ -135,6 +141,8 @@ def build_pipeline() -> Pipeline:
 
 
 def sha256_file(path: Path) -> str:
+    """Calculate an artifact checksum for reproducibility records."""
+
     digest = hashlib.sha256()
     with path.open("rb") as artifact:
         for chunk in iter(lambda: artifact.read(1024 * 1024), b""):
@@ -143,6 +151,8 @@ def sha256_file(path: Path) -> str:
 
 
 def main() -> None:
+    """Validate data, train the pipeline, verify reload, and save evaluation data."""
+
     dataframe = pd.read_csv(DATASET_PATH)
     validate_dataset_contract(dataframe)
 

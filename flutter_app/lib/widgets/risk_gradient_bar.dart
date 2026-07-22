@@ -1,7 +1,10 @@
+// Visual probability scale used by prediction result screens.
+
 import 'package:flutter/material.dart';
 
 import '../themes/app_theme.dart';
 
+/// Positions a marker on a low-to-high cardiovascular risk gradient.
 class RiskGradientBar extends StatelessWidget {
   final double probability;
   final bool showPercentage;

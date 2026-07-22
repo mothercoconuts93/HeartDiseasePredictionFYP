@@ -1,3 +1,5 @@
+// Verifies that assessment values retain the exact FastAPI request contract.
+
 import 'package:flutter_app/models/health_assessment_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 

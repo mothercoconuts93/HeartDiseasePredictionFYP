@@ -1,5 +1,8 @@
+// Shared CardioGuard colors and Material theme configuration.
+
 import 'package:flutter/material.dart';
 
+/// Defines the clinical visual system used consistently across all screens.
 class AppTheme {
   static const Color primary = Color(0xFF0A4FA0);
   static const Color primaryBright = Color(0xFF0D5BB5);
@@ -20,6 +23,7 @@ class AppTheme {
   static const Color darkRed = primaryBright;
   static const Color lightRed = lightBlue;
 
+  /// Builds the application's light Material theme from the design tokens.
   static ThemeData get lightTheme {
     const radius = BorderRadius.all(Radius.circular(12));
     final base = ThemeData(useMaterial3: true);

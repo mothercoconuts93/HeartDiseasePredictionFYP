@@ -1,5 +1,8 @@
+// Shared labelled text input used by authentication forms.
+
 import 'package:flutter/material.dart';
 
+/// Wraps a Material text field with consistent labels, icons, and validation.
 class CustomTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;

@@ -1,5 +1,8 @@
+// Reusable rendering of the bundled CardioGuard image asset.
+
 import 'package:flutter/material.dart';
 
+/// Displays the application logo at a caller-selected square size.
 class CardioGuardLogo extends StatelessWidget {
   final double size;
   final bool includeBackground;

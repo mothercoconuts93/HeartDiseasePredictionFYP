@@ -1,3 +1,5 @@
+"""Regression tests for API validation, risk bands, and model artifacts."""
+
 import unittest
 
 import joblib
@@ -18,6 +20,8 @@ client = TestClient(app)
 
 
 def valid_v1_payload(**overrides):
+    """Build a valid legacy request and selectively replace test fields."""
+
     values = {
         "Age": 50,
         "Gender": 1,
@@ -40,6 +44,8 @@ def valid_v1_payload(**overrides):
 
 
 def valid_v2_payload(**overrides):
+    """Build a valid categorical request and selectively replace test fields."""
+
     values = {
         "Age": 50,
         "Gender": "Male",
@@ -62,6 +68,8 @@ def valid_v2_payload(**overrides):
 
 
 class RiskClassificationTests(unittest.TestCase):
+    """Verify public health reporting and probability-to-risk thresholds."""
+
     def test_risk_thresholds(self):
         self.assertEqual(classify_risk(0)[0], "Very Low Risk")
         self.assertEqual(classify_risk(24.99)[0], "Very Low Risk")
@@ -79,6 +87,8 @@ class RiskClassificationTests(unittest.TestCase):
 
 
 class V1CompatibilityTests(unittest.TestCase):
+    """Protect the original endpoint contract from unintended regressions."""
+
     def test_existing_patient_validation_still_accepts_v1_contract(self):
         patient = PatientData(**valid_v1_payload(Age=18, Stress_Level=10))
         self.assertEqual(patient.Age, 18)
@@ -99,6 +109,8 @@ class V1CompatibilityTests(unittest.TestCase):
 
 
 class PipelineV2ArtifactTests(unittest.TestCase):
+    """Verify that the deployed pipeline exists and preserves its input schema."""
+
     def test_v2_pipeline_artifact_exists_and_loads(self):
         self.assertTrue(PIPELINE_V2_PATH.is_file())
         loaded_pipeline = joblib.load(PIPELINE_V2_PATH)
@@ -110,6 +122,8 @@ class PipelineV2ArtifactTests(unittest.TestCase):
 
 
 class PredictionV2Tests(unittest.TestCase):
+    """Exercise accepted categories and rejected V2 request variations."""
+
     def assert_valid_prediction(self, payload):
         response = client.post("/predict/v2", json=payload)
         self.assertEqual(response.status_code, 200, response.text)

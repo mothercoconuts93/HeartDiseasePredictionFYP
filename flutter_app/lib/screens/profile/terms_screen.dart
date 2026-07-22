@@ -1,8 +1,12 @@
+// Static terms of service and clinical-use limitations.
+
 import 'package:flutter/material.dart';
 
+/// Presents CardioGuard usage terms and the non-diagnostic disclaimer.
 class TermsScreen extends StatelessWidget {
   const TermsScreen({super.key});
 
+  /// Formats one terms heading and its explanatory paragraph.
   Widget _section(String title, String body) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 22),

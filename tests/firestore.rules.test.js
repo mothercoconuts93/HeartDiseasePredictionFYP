@@ -1,3 +1,5 @@
+// Emulator-only authorization tests for CardioGuard's Firestore rules.
+
 const fs = require('node:fs');
 const path = require('node:path');
 const { after, before, beforeEach, test } = require('node:test');
@@ -26,6 +28,7 @@ const PRACTITIONER_UID = 'practitioner-claire';
 let testEnv;
 
 function profile(uid, role, fullName) {
+  // Build the minimum user shape needed by the security-rule scenarios.
   return {
     uid,
     fullName,
@@ -36,6 +39,7 @@ function profile(uid, role, fullName) {
 }
 
 function prediction(userId, predictionId) {
+  // Build an isolated prediction fixture without calling the live API.
   return {
     predictionId,
     userId,
@@ -50,6 +54,7 @@ function authenticatedFirestore(uid, tokenOptions = {}) {
 }
 
 async function seedFirestore() {
+  // Seed local fixtures with rules disabled; production data is never touched.
   await testEnv.withSecurityRulesDisabled(async (context) => {
     const db = context.firestore();
 

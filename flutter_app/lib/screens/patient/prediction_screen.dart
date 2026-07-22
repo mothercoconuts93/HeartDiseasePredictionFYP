@@ -1,3 +1,5 @@
+// Cardiovascular assessment form and prediction-submission workflow.
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +11,7 @@ import '../../widgets/loading_indicator.dart';
 import 'result_screen.dart';
 import '../../themes/app_theme.dart';
 
+/// Collects and validates the exact inputs required by the production model.
 class PredictionScreen extends StatefulWidget {
   const PredictionScreen({super.key});
 
@@ -47,6 +50,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     super.dispose();
   }
 
+  /// Parses a controller after field validation has established an integer.
   int parseInt(TextEditingController controller) {
     return int.tryParse(controller.text.trim()) ?? -1;
   }
@@ -62,6 +66,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     return null;
   }
 
+  /// Builds a numeric form field with shared clinical range validation.
   Widget _numberField(
     String label,
     TextEditingController controller, {
@@ -85,6 +90,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     );
   }
 
+  /// Groups related assessment controls into a labelled visual section.
   Widget _section({
     required IconData icon,
     required String title,
@@ -123,6 +129,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     );
   }
 
+  /// Builds a dropdown constrained to API-supported categorical values.
   Widget _dropdown({
     required String label,
     required String value,
@@ -142,6 +149,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     );
   }
 
+  /// Creates the transient assessment, runs inference, and opens the result.
   Future<void> submitPrediction() async {
     FocusScope.of(context).unfocus();
 

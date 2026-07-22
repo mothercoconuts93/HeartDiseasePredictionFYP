@@ -1,3 +1,5 @@
+// Public Patient account registration screen.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +11,7 @@ import '../../widgets/cardio_guard_logo.dart';
 import '../patient/patient_home_screen.dart';
 import '../../themes/app_theme.dart';
 
+/// Collects account details while preventing public Practitioner registration.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -34,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  /// Validates matching passwords before creating a Patient account.
   Future<void> registerUser() async {
     FocusScope.of(context).unfocus();
 

@@ -1,3 +1,5 @@
+"""FastAPI service that validates clinical inputs and serves model inference."""
+
 import logging
 import os
 from pathlib import Path
@@ -78,6 +80,8 @@ app.add_middleware(
 
 # Input Model
 class PatientData(BaseModel):
+    """Legacy numerical request contract retained for `/predict` compatibility."""
+
     Age: int = Field(..., ge=18, le=120)
     Gender: int = Field(..., ge=0, le=1)
 
@@ -103,6 +107,8 @@ class PatientData(BaseModel):
 
 
 class PatientDataV2(BaseModel):
+    """Validated request contract matching the raw categorical pipeline inputs."""
+
     Age: int = Field(..., ge=18, le=120)
     Gender: Literal["Female", "Male"]
 
@@ -131,6 +137,8 @@ class PatientDataV2(BaseModel):
 
 # Response Model
 class PredictionResponse(BaseModel):
+    """Stable response returned to Flutter after successful model inference."""
+
     prediction: int
     risk_level: str
     probability: float
@@ -140,6 +148,8 @@ class PredictionResponse(BaseModel):
 
 
 def classify_risk(probability: float) -> tuple[str, str]:
+    """Map a percentage probability to a readable risk band and guidance."""
+
     if probability >= 75:
         return (
             "High Risk",
@@ -165,6 +175,8 @@ def classify_risk(probability: float) -> tuple[str, str]:
 # Home Endpoint
 @app.get("/")
 def home():
+    """Return a lightweight confirmation that the API process is running."""
+
     return {
         "service": "CardioGuard Prediction API",
         "status": "running",
@@ -173,6 +185,8 @@ def home():
 
 @app.get("/health")
 def health():
+    """Report service version and availability of both serialized artifacts."""
+
     return {
         "status": "healthy",
         "service": "CardioGuard Prediction API",
@@ -187,6 +201,8 @@ def health():
 # Prediction Endpoint
 @app.post("/predict", response_model=PredictionResponse)
 def predict(data: PatientData):
+    """Run the legacy model using the original integer-encoded API contract."""
+
     try:
 
         patient_data = pd.DataFrame([{
@@ -234,6 +250,12 @@ def predict(data: PatientData):
 
 @app.post("/predict/v2", response_model=PredictionResponse)
 def predict_v2(data: PatientDataV2):
+    """Run the production preprocessing and Random Forest pipeline.
+
+    The DataFrame column order is fixed to the training contract so the
+    serialized preprocessing stages receive the same schema used in training.
+    """
+
     if pipeline_v2 is None:
         raise HTTPException(
             status_code=503,

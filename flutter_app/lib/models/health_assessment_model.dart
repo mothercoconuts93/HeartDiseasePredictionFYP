@@ -1,3 +1,5 @@
+// Temporary assessment request model and API-compatible option values.
+
 const genderOptions = ['Female', 'Male'];
 const smokingOptions = ['Current', 'Former', 'Never'];
 const alcoholIntakeOptions = ['Heavy', 'Moderate', 'Unknown'];
@@ -9,6 +11,9 @@ const chestPainTypeOptions = [
   'Asymptomatic',
 ];
 
+/// Holds the 15 validated clinical inputs sent to FastAPI for one prediction.
+///
+/// This object is transient and is never serialized to Cloud Firestore.
 class HealthAssessmentModel {
   final int age;
   final String gender;
@@ -44,6 +49,7 @@ class HealthAssessmentModel {
     required this.chestPainType,
   });
 
+  /// Converts Dart field names to the exact request keys expected by FastAPI.
   Map<String, dynamic> toJson() {
     return {
       "Age": age,
@@ -64,7 +70,9 @@ class HealthAssessmentModel {
     };
   }
 
+  /// Provides a map alias for callers that use model-style serialization.
   Map<String, dynamic> toMap() {
     return toJson();
   }
 }
+// Temporary assessment request model and API-compatible option values.

@@ -1,9 +1,13 @@
+// Static preventive heart-health guidance for Patient users.
+
 import 'package:flutter/material.dart';
 import '../../themes/app_theme.dart';
 
+/// Presents general guidance separately from model-generated recommendations.
 class HealthRecommendationsScreen extends StatelessWidget {
   const HealthRecommendationsScreen({super.key});
 
+  /// Builds one icon-led preventive guidance card.
   Widget _recommendationCard({
     required IconData icon,
     required String title,

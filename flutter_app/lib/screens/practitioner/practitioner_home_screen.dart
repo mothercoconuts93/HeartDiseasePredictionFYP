@@ -1,3 +1,5 @@
+// Practitioner dashboard derived from live Patient and prediction streams.
+
 import 'package:flutter/material.dart';
 
 import '../../models/prediction_model.dart';
@@ -10,9 +12,11 @@ import '../../widgets/practitioner_bottom_nav.dart';
 import 'practitioner_history_screen.dart';
 import 'practitioner_profile_screen.dart';
 
+/// Calculates current practice summaries without storing dashboard statistics.
 class PractitionerHomeScreen extends StatelessWidget {
   const PractitionerHomeScreen({super.key});
 
+  /// Builds one calculated dashboard statistic card.
   Widget _statCard({
     required String title,
     required String value,
@@ -57,6 +61,7 @@ class PractitionerHomeScreen extends StatelessWidget {
     );
   }
 
+  /// Finds the newest record because the Firestore stream is date-ordered.
   PredictionModel? _latestPredictionFor(
     String userId,
     List<PredictionModel> predictions,

@@ -1,3 +1,5 @@
+// Verifies Firestore user parsing, including role and timestamp compatibility.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 

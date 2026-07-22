@@ -1,3 +1,5 @@
+"""Evaluate the production pipeline and generate reproducible report figures."""
+
 import hashlib
 import sys
 from pathlib import Path
@@ -39,6 +41,8 @@ RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
 
 def sha256_file(path: Path) -> str:
+    """Return the SHA-256 checksum of a serialized model artifact."""
+
     digest = hashlib.sha256()
     with path.open("rb") as artifact:
         for chunk in iter(lambda: artifact.read(1024 * 1024), b""):
@@ -47,6 +51,8 @@ def sha256_file(path: Path) -> str:
 
 
 def classifier_definitions() -> dict[str, object]:
+    """Provide comparable baseline classifiers with deterministic settings."""
+
     return {
         "DummyClassifier": DummyClassifier(strategy="prior", random_state=42),
         "LogisticRegression": LogisticRegression(
@@ -59,6 +65,8 @@ def classifier_definitions() -> dict[str, object]:
 
 
 def save_class_distribution(y: pd.Series) -> None:
+    """Save the target-class balance chart used in the evaluation report."""
+
     counts = y.value_counts().sort_index()
     labels = ["No Heart Disease (0)", "Heart Disease (1)"]
 
@@ -74,6 +82,8 @@ def save_class_distribution(y: pd.Series) -> None:
 
 
 def save_confusion_matrix(matrix: np.ndarray) -> None:
+    """Render the Random Forest confusion matrix to the results directory."""
+
     fig, ax = plt.subplots(figsize=(6, 5))
     image = ax.imshow(matrix, cmap="Blues")
     ax.set_title("Random Forest Confusion Matrix")
@@ -105,6 +115,8 @@ def save_roc_curves(
     probabilities_by_model: dict[str, np.ndarray],
     auc_by_model: dict[str, float],
 ) -> None:
+    """Plot ROC curves for models that expose probability estimates."""
+
     fig, ax = plt.subplots(figsize=(8, 6))
     for model_name, probabilities in probabilities_by_model.items():
         false_positive_rate, true_positive_rate, _ = roc_curve(
@@ -131,6 +143,8 @@ def save_roc_curves(
 
 
 def save_feature_importance(random_forest_pipeline: Pipeline) -> None:
+    """Extract transformed feature names and plot Random Forest importance."""
+
     preprocessor = random_forest_pipeline.named_steps["preprocessor"]
     classifier = random_forest_pipeline.named_steps["classifier"]
     feature_names = preprocessor.get_feature_names_out()
@@ -154,6 +168,8 @@ def save_feature_importance(random_forest_pipeline: Pipeline) -> None:
 
 
 def save_model_comparison(results: pd.DataFrame) -> None:
+    """Plot evaluation metrics for all candidate classifiers."""
+
     metric_columns = ["accuracy", "precision", "recall", "f1_score", "roc_auc"]
     chart_data = results.set_index("model")[metric_columns]
 
@@ -179,6 +195,8 @@ def write_dataset_summary(
     y_test: pd.Series,
     artifact_hash: str,
 ) -> None:
+    """Record dataset properties, versions, and artifact identity for the report."""
+
     missing_values = dataframe.isna().sum()
     missing_values = missing_values[missing_values > 0].to_dict()
     summary = [
@@ -223,6 +241,8 @@ def write_dataset_summary(
 
 
 def main() -> None:
+    """Evaluate candidates on a fixed split and export metrics and figures."""
+
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     dataframe = pd.read_csv(DATASET_PATH)

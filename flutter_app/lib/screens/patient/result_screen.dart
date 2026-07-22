@@ -1,3 +1,5 @@
+// Immediate presentation of a successfully persisted prediction result.
+
 import 'package:flutter/material.dart';
 
 import '../../widgets/custom_button.dart';
@@ -5,6 +7,7 @@ import '../../themes/app_theme.dart';
 import '../../widgets/risk_badge.dart';
 import '../../widgets/risk_gradient_bar.dart';
 
+/// Displays risk, probability, recommendation, and next-step navigation.
 class ResultScreen extends StatelessWidget {
   final String riskLevel;
   final double probability;
@@ -17,6 +20,7 @@ class ResultScreen extends StatelessWidget {
     required this.recommendation,
   });
 
+  /// Chooses the severity color used by the result summary.
   Color get riskColor {
     if (riskLevel.contains('High')) return AppTheme.danger;
     if (riskLevel.contains('Moderate')) return AppTheme.warning;

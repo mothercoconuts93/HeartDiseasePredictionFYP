@@ -1,7 +1,10 @@
+// Compact information card for profile and clinical summary values.
+
 import 'package:flutter/material.dart';
 
 import '../themes/app_theme.dart';
 
+/// Displays a labelled value with a contextual icon and accent color.
 class InfoCard extends StatelessWidget {
   final IconData icon;
   final String title;

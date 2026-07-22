@@ -1,7 +1,10 @@
+// Tappable dashboard entry card shared by Patient navigation actions.
+
 import 'package:flutter/material.dart';
 
 import '../themes/app_theme.dart';
 
+/// Presents an icon, title, description, and navigation callback as one card.
 class DashboardCard extends StatelessWidget {
   final IconData icon;
   final String title;

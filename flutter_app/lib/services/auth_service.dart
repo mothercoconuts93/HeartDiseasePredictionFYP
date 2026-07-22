@@ -1,8 +1,11 @@
+// Low-level Firebase Authentication and user-profile operations.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/user_model.dart';
 
+/// Coordinates Firebase Authentication with the matching Firestore profile.
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -11,10 +14,12 @@ class AuthService {
     return _auth.currentUser;
   }
 
+  /// Emits Firebase sign-in and sign-out changes used by the root auth gate.
   Stream<User?> get authStateChanges {
     return _auth.authStateChanges();
   }
 
+  /// Creates a public account and forces its Firestore role to `Patient`.
   Future<UserCredential> registerUser({
     required String fullName,
     required String email,
@@ -41,6 +46,7 @@ class AuthService {
     return userCredential;
   }
 
+  /// Authenticates an existing Firebase email/password account.
   Future<UserCredential> loginUser({
     required String email,
     required String password,
@@ -53,14 +59,17 @@ class AuthService {
     return credential;
   }
 
+  /// Terminates the current Firebase Authentication session.
   Future<void> logoutUser() async {
     await _auth.signOut();
   }
 
+  /// Requests Firebase's email-based password recovery flow.
   Future<void> resetPassword({required String email}) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
   }
 
+  /// Loads the signed-in user's role-bearing Firestore profile.
   Future<UserModel?> getCurrentUserData() async {
     final User? user = _auth.currentUser;
 

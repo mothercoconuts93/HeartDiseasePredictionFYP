@@ -1,3 +1,5 @@
+// Widget tests for risk labels, colors, and probability visualization.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/risk_badge.dart';
 import 'package:flutter_app/widgets/risk_gradient_bar.dart';

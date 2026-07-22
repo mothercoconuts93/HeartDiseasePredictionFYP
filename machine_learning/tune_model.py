@@ -1,3 +1,5 @@
+"""Tune Random Forest hyperparameters with recall-focused cross-validation."""
+
 import pandas as pd
 
 from sklearn.preprocessing import LabelEncoder

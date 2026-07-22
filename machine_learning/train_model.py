@@ -1,3 +1,5 @@
+"""Report basic dataset quality statistics before model development."""
+
 import pandas as pd
 
 df = pd.read_csv("dataset/heart_disease_dataset.csv")

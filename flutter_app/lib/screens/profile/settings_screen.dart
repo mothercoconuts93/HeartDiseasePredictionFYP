@@ -1,3 +1,5 @@
+// Application information and links to policy documents.
+
 import 'package:flutter/material.dart';
 
 import '../../widgets/info_card.dart';
@@ -5,9 +7,11 @@ import 'privacy_policy_screen.dart';
 import 'terms_screen.dart';
 import '../../themes/app_theme.dart';
 
+/// Displays legal information and project details.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
+  /// Builds a navigable settings row with consistent styling.
   Widget _settingsTile({
     required IconData icon,
     required String title,

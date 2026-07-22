@@ -1,5 +1,8 @@
+// Reusable Patient navigation bar for Home, History, and Profile.
+
 import 'package:flutter/material.dart';
 
+/// Displays the Patient role's three primary navigation destinations.
 class AppBottomNav extends StatelessWidget {
   final int currentIndex;
   final VoidCallback onHome;

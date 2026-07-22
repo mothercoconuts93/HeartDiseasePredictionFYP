@@ -1,3 +1,5 @@
+// Patient account summary, settings access, and logout workflow.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,9 +13,11 @@ import '../../widgets/app_bottom_nav.dart';
 import 'history_screen.dart';
 import 'patient_home_screen.dart';
 
+/// Displays the authenticated Patient profile loaded from Firestore.
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  /// Confirms logout before clearing the Firebase session.
   Future<void> logout(BuildContext context) async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -49,6 +53,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  /// Formats the Firestore profile creation date for display.
   String _formatJoinedDate(DateTime date) {
     const months = [
       'January',

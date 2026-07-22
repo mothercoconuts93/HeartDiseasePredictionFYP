@@ -1,3 +1,5 @@
+// Presentation state for API inference and Firestore prediction persistence.
+
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -6,6 +8,7 @@ import '../models/prediction_model.dart';
 import '../services/firestore_service.dart';
 import '../services/prediction_service.dart';
 
+/// Coordinates the assessment-to-API-to-Firestore prediction workflow.
 class PredictionProvider extends ChangeNotifier {
   final PredictionService _predictionService = PredictionService();
   final FirestoreService _firestoreService = FirestoreService();
@@ -15,10 +18,14 @@ class PredictionProvider extends ChangeNotifier {
 
   PredictionModel? latestPrediction;
 
+  /// Exposes a real-time history stream for the authenticated Patient.
   Stream<List<PredictionModel>> getPredictionHistory(String userId) {
     return _firestoreService.getPredictionsByUser(userId);
   }
 
+  /// Runs inference, creates a persistent result, and reports overall success.
+  ///
+  /// A successful return means both the API call and Firestore save completed.
   Future<bool> runPrediction({
     required String userId,
     required HealthAssessmentModel assessment,

@@ -1,3 +1,5 @@
+// HTTP client for the versioned CardioGuard FastAPI prediction endpoint.
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -5,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/health_assessment_model.dart';
 
+/// Presents prediction transport failures as readable application errors.
 class PredictionServiceException implements Exception {
   final String message;
 
@@ -14,17 +17,20 @@ class PredictionServiceException implements Exception {
   String toString() => message;
 }
 
+/// Serializes temporary assessment inputs and calls `POST /predict/v2`.
 class PredictionService {
   final http.Client _client;
 
   PredictionService({http.Client? client}) : _client = client ?? http.Client();
 
+  /// Resolves a build-time API URL, with local development fallbacks.
   String get baseUrl {
     const configuredUrl = String.fromEnvironment('CARDIOGUARD_API_URL');
     if (configuredUrl.isNotEmpty) return configuredUrl;
     return 'https://cardioguard-api-540d.onrender.com';
   }
 
+  /// Sends an assessment and validates the minimum successful response shape.
   Future<Map<String, dynamic>> predictHeartDisease(
     HealthAssessmentModel assessment,
   ) async {

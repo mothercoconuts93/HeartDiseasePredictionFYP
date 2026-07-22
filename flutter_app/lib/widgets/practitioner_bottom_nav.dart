@@ -1,5 +1,8 @@
+// Reusable Practitioner navigation bar for the role-specific workflow.
+
 import 'package:flutter/material.dart';
 
+/// Displays Practitioner Home, History, and Profile destinations.
 class PractitionerBottomNav extends StatelessWidget {
   final int currentIndex;
   final VoidCallback onHome;
