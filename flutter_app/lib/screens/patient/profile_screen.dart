@@ -103,10 +103,12 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 15),
           Text(
             user?.fullName ?? 'Patient User',
+            textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           Text(
             user?.email ?? authProvider.firebaseUser?.email ?? '',
+            textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 30),
